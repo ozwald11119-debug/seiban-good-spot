@@ -1,13 +1,14 @@
 (()=>{
 'use strict';
 
+let restoring=false;
 async function restoreAdminAfterReload(){
+  if(restoring)return;
+  restoring=true;
   try{
     const {data,error}=await db.auth.getSession();
     if(error||!data?.session?.user)return;
 
-    // Confirm that the signed-in user is actually registered as a Seiban admin.
-    // RLS on seiban_admins only exposes the caller's own row.
     const {data:adminRows,error:adminError}=await db
       .from('seiban_admins')
       .select('user_id')
@@ -16,25 +17,33 @@ async function restoreAdminAfterReload(){
 
     if(adminError||!adminRows?.length)return;
 
-    // A browser reload normally returns index.html to the public "discover" view.
-    // Restore the admin view when a valid admin session already exists.
     if(typeof showAdmin==='function')showAdmin();
+    // showAdmin/checkAdmin may race with Safari's asynchronous session restore.
+    // Explicitly refresh the lists once the verified session is available.
+    setTimeout(()=>{
+      if(typeof window.loadAdmin==='function')window.loadAdmin().catch(err=>console.warn('Admin list reload failed',err));
+    },50);
   }catch(err){
     console.warn('Admin session restore failed',err);
+  }finally{
+    restoring=false;
   }
 }
 
-// Supabase restores its persisted session asynchronously on Safari/iOS.
-// Run once after the page scripts are ready, then again when the initial
-// signed-in state is announced. The guard in showAdmin/checkAdmin is idempotent.
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',restoreAdminAfterReload,{once:true});
-}else{
+function scheduleRestore(){
   restoreAdminAfterReload();
+  setTimeout(restoreAdminAfterReload,250);
+  setTimeout(restoreAdminAfterReload,900);
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',scheduleRestore,{once:true});
+}else{
+  scheduleRestore();
 }
 
 db.auth.onAuthStateChange((event,session)=>{
-  if(event==='INITIAL_SESSION'&&session?.user){
+  if((event==='INITIAL_SESSION'||event==='SIGNED_IN'||event==='TOKEN_REFRESHED')&&session?.user){
     setTimeout(restoreAdminAfterReload,0);
   }
 });
