@@ -1,0 +1,4 @@
+insert into public.spots (slug,name,area,genre,lead,description,website_url,instagram_url,post_url,tags,featured,sort_order) values
+('bakery-coneru','bakery coneru','上郡町','パン','上郡駅から徒歩3分。添加物不使用の小さなパン屋さん。','上郡駅近くにある、添加物不使用にこだわるベーカリー。小麦の香りを楽しめるパンが並び、駅から歩いて立ち寄りやすい一軒です。','https://coneru.jimdofree.com','https://www.instagram.com/bakery_coneru_2018','https://www.instagram.com/p/Dc5OnmcE5DJ/',array['パン屋','駅近','添加物不使用'],true,10),
+('merry-widow','MERRY WIDOW patisserie&coffee roastery','上郡町','カフェ','上郡駅から徒歩6分。ケーキとコーヒーを楽しむ寄り道。','ケーキや焼菓子、クロワッサンサンド、パフェ、コーヒーを楽しめる上郡の一軒。散策途中の寄り道にも。','https://www.merrywidow.net/','https://www.instagram.com/merrywidow','https://www.instagram.com/p/DchgnKHkyAs/',array['カフェ','ケーキ','コーヒー','駅近'],true,20)
+on conflict (slug) do nothing;
