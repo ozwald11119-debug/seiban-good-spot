@@ -47,80 +47,28 @@
 <script src="app.js?v=3"></script>
 <script>
 (() => {
-  const municipalities = [
-    ["姫路市","28201"],["相生市","28208"],["赤穂市","28212"],
-    ["宍粟市","28227"],["たつの市","28229"],["太子町","28464"],["上郡町","28481"]
-  ];
-  const svg = document.getElementById("areaMapSvg");
-  const loading = document.getElementById("mapLoading");
-  const NS = "http://www.w3.org/2000/svg";
-
-  const ringsOf = geometry => {
-    if (!geometry) return [];
-    if (geometry.type === "Polygon") return geometry.coordinates;
-    if (geometry.type === "MultiPolygon") return geometry.coordinates.flat();
-    return [];
-  };
-  const allPoints = feature => ringsOf(feature.geometry).flat();
-  const largestOuterRing = feature => {
-    const rings = ringsOf(feature.geometry);
-    let best = rings[0] || [], bestArea = 0;
-    for (const ring of rings) {
-      let a = 0;
-      for (let i=0,j=ring.length-1;i<ring.length;j=i++) a += ring[j][0]*ring[i][1]-ring[i][0]*ring[j][1];
-      a = Math.abs(a);
-      if (a > bestArea) { bestArea = a; best = ring; }
-    }
-    return best;
-  };
-
-  Promise.all(municipalities.map(async ([name,code]) => {
-    const r = await fetch(`https://shikuchoson-boundaries.sankichi.app/${code}.geojson`);
-    if (!r.ok) throw new Error(`${name}: ${r.status}`);
-    return [name, await r.json()];
-  })).then(items => {
-    const points = items.flatMap(([,f]) => allPoints(f));
-    const lons = points.map(p=>p[0]), lats = points.map(p=>p[1]);
-    const minLon=Math.min(...lons), maxLon=Math.max(...lons), minLat=Math.min(...lats), maxLat=Math.max(...lats);
-    const W=640,H=590,P=26;
-    const scale=Math.min((W-P*2)/(maxLon-minLon),(H-P*2)/(maxLat-minLat));
-    const usedW=(maxLon-minLon)*scale, usedH=(maxLat-minLat)*scale;
-    const ox=(W-usedW)/2, oy=(H-usedH)/2;
+  const municipalities = [["姫路市","28201"],["相生市","28208"],["赤穂市","28212"],["宍粟市","28227"],["たつの市","28229"],["太子町","28464"],["上郡町","28481"]];
+  const svg=document.getElementById("areaMapSvg"),loading=document.getElementById("mapLoading"),NS="http://www.w3.org/2000/svg";
+  const ringsOf=geometry=>!geometry?[]:geometry.type==="Polygon"?geometry.coordinates:geometry.type==="MultiPolygon"?geometry.coordinates.flat():[];
+  const allPoints=feature=>ringsOf(feature.geometry).flat();
+  const largestOuterRing=feature=>{const rings=ringsOf(feature.geometry);let best=rings[0]||[],bestArea=0;for(const ring of rings){let a=0;for(let i=0,j=ring.length-1;i<ring.length;j=i++)a+=ring[j][0]*ring[i][1]-ring[i][0]*ring[j][1];a=Math.abs(a);if(a>bestArea){bestArea=a;best=ring}}return best};
+  Promise.all(municipalities.map(async([name,code])=>{const r=await fetch(`https://shikuchoson-boundaries.sankichi.app/${code}.geojson`);if(!r.ok)throw new Error(`${name}: ${r.status}`);return[name,await r.json()]})).then(items=>{
+    const points=items.flatMap(([,f])=>allPoints(f)),lons=points.map(p=>p[0]),lats=points.map(p=>p[1]);
+    const minLon=Math.min(...lons),maxLon=Math.max(...lons),minLat=Math.min(...lats),maxLat=Math.max(...lats),W=640,H=590,P=26;
+    const scale=Math.min((W-P*2)/(maxLon-minLon),(H-P*2)/(maxLat-minLat)),usedW=(maxLon-minLon)*scale,usedH=(maxLat-minLat)*scale,ox=(W-usedW)/2,oy=(H-usedH)/2;
     const project=([lon,lat])=>[ox+(lon-minLon)*scale,oy+(maxLat-lat)*scale];
-    const ringPath=ring=>ring.map((p,i)=>{const [x,y]=project(p);return `${i?'L':'M'}${x.toFixed(1)},${y.toFixed(1)}`}).join('')+'Z';
-
-    for (const [name,feature] of items) {
-      const g=document.createElementNS(NS,'g');
-      g.setAttribute('class','mapGeoArea');
-      g.setAttribute('data-area',name);
-      g.setAttribute('role','button');
-      g.setAttribute('tabindex','0');
-      g.setAttribute('aria-label',`${name}を選択`);
-      const path=document.createElementNS(NS,'path');
-      path.setAttribute('d',ringsOf(feature.geometry).map(ringPath).join(' '));
-      path.setAttribute('fill-rule','evenodd');
-      g.appendChild(path);
-
-      const main=largestOuterRing(feature).map(project);
-      let sx=0,sy=0;
-      for(const p of main){sx+=p[0];sy+=p[1]}
-      let x=sx/main.length,y=sy/main.length;
-      const tweaks={"姫路市":[8,25],"宍粟市":[0,0],"たつの市":[-18,-14],"太子町":[0,0],"上郡町":[0,0],"相生市":[-24,18],"赤穂市":[0,0]};
-      x+=tweaks[name][0]; y+=tweaks[name][1];
-      const text=document.createElementNS(NS,'text');
-      text.setAttribute('x',x); text.setAttribute('y',y);
-      text.setAttribute('class',`mapGeoLabel ${['太子町','相生市','たつの市'].includes(name)?'small':''}`);
-      text.textContent=name;
-      g.appendChild(text);
-      svg.appendChild(g);
+    const ringPath=ring=>ring.map((p,i)=>{const[x,y]=project(p);return`${i?'L':'M'}${x.toFixed(1)},${y.toFixed(1)}`}).join('')+'Z';
+    for(const[name,feature]of items){
+      const g=document.createElementNS(NS,'g');g.setAttribute('class','mapGeoArea');g.setAttribute('data-area',name);g.setAttribute('role','button');g.setAttribute('tabindex','0');g.setAttribute('aria-label',`${name}を選択`);
+      const path=document.createElementNS(NS,'path');path.setAttribute('d',ringsOf(feature.geometry).map(ringPath).join(' '));path.setAttribute('fill-rule','evenodd');g.appendChild(path);
+      const main=largestOuterRing(feature).map(project);let sx=0,sy=0;for(const p of main){sx+=p[0];sy+=p[1]}let x=sx/main.length,y=sy/main.length;
+      const tweaks={"姫路市":[8,25],"宍粟市":[0,0],"たつの市":[-18,-14],"太子町":[0,0],"上郡町":[0,0],"相生市":[0,0],"赤穂市":[0,0]};x+=tweaks[name][0];y+=tweaks[name][1];
+      if(name==='相生市'){[x,y]=project([134.468,34.803]);}
+      const text=document.createElementNS(NS,'text');text.setAttribute('x',x);text.setAttribute('y',y);text.setAttribute('class',`mapGeoLabel ${['太子町','相生市','たつの市'].includes(name)?'small':''}`);text.textContent=name;g.appendChild(text);svg.appendChild(g);
       g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();g.dispatchEvent(new MouseEvent('click',{bubbles:true}))}});
     }
-    loading.remove();
-    svg.hidden=false;
-  }).catch(err => {
-    console.error(err);
-    loading.innerHTML='地図を読み込めませんでした。<br>下の「エリアから見つける」から選択できます。';
-  });
+    loading.remove();svg.hidden=false;
+  }).catch(err=>{console.error(err);loading.innerHTML='地図を読み込めませんでした。<br>下の「エリアから見つける」から選択できます。'});
 })();
 </script>
 </body>
