@@ -1,0 +1,3 @@
+alter table public.recommendations add constraint recommendations_status_check check (status in ('pending','approved','rejected'));
+alter table public.recommendations add constraint recommendations_spot_name_length check (char_length(spot_name) between 1 and 120);
+alter table public.recommendations add constraint recommendations_comment_length check (comment is null or char_length(comment) <= 1000);
