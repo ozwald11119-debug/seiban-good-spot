@@ -734,3 +734,256 @@ main{
     padding-right:22px;
   }
 }
+/* =========================================
+   CONNECTED AREA MAP - FINAL OVERRIDE
+   ========================================= */
+
+.seibanMap{
+  position:relative;
+  width:100%;
+  height:430px;
+  overflow:hidden;
+  border:1px solid rgba(70,76,67,.10);
+  border-radius:30px;
+  background:
+    linear-gradient(
+      to bottom,
+      #f3efe5 0%,
+      #f3efe5 79%,
+      #dce9ec 79%,
+      #dce9ec 100%
+    );
+  box-shadow:0 12px 32px rgba(42,39,32,.08);
+}
+
+/* 全エリア共通 */
+.seibanMap .mapArea{
+  position:absolute;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  padding:5px;
+  margin:0;
+  border:1px solid #c9c3b7;
+  border-radius:0;
+  background:#eee9dd;
+  color:#292720;
+  box-shadow:none;
+  transform:none;
+  transition:
+    background .18s ease,
+    color .18s ease,
+    filter .18s ease;
+}
+
+.seibanMap .mapArea strong{
+  position:relative;
+  z-index:5;
+  display:block;
+  font-size:13px;
+  line-height:1.1;
+  font-weight:750;
+  white-space:nowrap;
+}
+
+.seibanMap .mapArea span{
+  position:relative;
+  z-index:5;
+  display:block;
+  margin-top:5px;
+  color:#928c80;
+  font-size:7px;
+  line-height:1;
+  font-weight:800;
+  letter-spacing:.15em;
+}
+
+.seibanMap .mapArea.active{
+  z-index:10;
+  border-color:#456b56;
+  background:#4d725d;
+  color:#fff;
+  filter:drop-shadow(0 5px 7px rgba(44,69,53,.16));
+}
+
+.seibanMap .mapArea.active span{
+  color:rgba(255,255,255,.72);
+}
+
+
+/* ───────── 宍粟市 ───────── */
+
+.seibanMap .shiso{
+  left:11%;
+  top:8%;
+  width:36%;
+  height:38%;
+
+  clip-path:polygon(
+    10% 0,
+    88% 0,
+    100% 13%,
+    97% 100%,
+    12% 100%,
+    0 75%,
+    3% 23%
+  );
+}
+
+
+/* ───────── 姫路市 ───────── */
+
+.seibanMap .himeji{
+  left:47%;
+  top:8%;
+  width:42%;
+  height:51%;
+
+  clip-path:polygon(
+    4% 0,
+    82% 0,
+    100% 16%,
+    98% 58%,
+    88% 100%,
+    51% 96%,
+    45% 78%,
+    0 78%,
+    0 36%
+  );
+}
+
+
+/* ───────── 上郡町 ───────── */
+
+.seibanMap .kamigori{
+  left:11%;
+  top:46%;
+  width:28%;
+  height:30%;
+
+  clip-path:polygon(
+    4% 0,
+    100% 0,
+    100% 100%,
+    12% 100%,
+    0 76%,
+    0 17%
+  );
+}
+
+
+/* ───────── たつの市 ───────── */
+
+.seibanMap .tatsuno{
+  left:39%;
+  top:46%;
+  width:31%;
+  height:30%;
+
+  clip-path:polygon(
+    0 0,
+    100% 0,
+    100% 73%,
+    82% 100%,
+    0 100%
+  );
+}
+
+
+/* ───────── 太子町 ───────── */
+
+.seibanMap .taishi{
+  left:70%;
+  top:51%;
+  width:18%;
+  height:17%;
+
+  clip-path:polygon(
+    0 0,
+    100% 0,
+    100% 100%,
+    0 100%
+  );
+}
+
+.seibanMap .taishi strong{
+  font-size:11px;
+}
+
+
+/* ───────── 赤穂市 ───────── */
+
+.seibanMap .ako{
+  left:11%;
+  top:76%;
+  width:28%;
+  height:17%;
+
+  clip-path:polygon(
+    0 0,
+    100% 0,
+    100% 72%,
+    82% 100%,
+    15% 94%,
+    0 68%
+  );
+}
+
+
+/* ───────── 相生市 ───────── */
+
+.seibanMap .aioi{
+  left:39%;
+  top:76%;
+  width:31%;
+  height:17%;
+
+  clip-path:polygon(
+    0 0,
+    82% 0,
+    100% 35%,
+    83% 100%,
+    13% 92%,
+    0 55%
+  );
+}
+
+
+/* 海の表示 */
+.seibanMap .seaLabel{
+  position:absolute;
+  right:18px;
+  bottom:13px;
+  z-index:1;
+  color:#769199;
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.17em;
+}
+
+/* 古い装飾線を無効化 */
+.seibanMap::after{
+  display:none;
+}
+
+
+/* iPhoneの小さい画面 */
+@media(max-width:390px){
+
+  .seibanMap{
+    height:410px;
+  }
+
+  .seibanMap .mapArea strong{
+    font-size:12px;
+  }
+
+  .seibanMap .mapArea span{
+    font-size:6px;
+  }
+
+  .seibanMap .taishi strong{
+    font-size:10px;
+  }
+}
