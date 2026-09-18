@@ -1,0 +1,1 @@
+alter table public.recommendations add constraint recommendations_area_check check (area is null or area in ('姫路市','宍粟市','たつの市','太子町','上郡町','相生市','赤穂市'));
