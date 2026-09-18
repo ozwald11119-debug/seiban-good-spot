@@ -1,4 +1,4 @@
-const CACHE='nishiharima-guide-v18';
+const CACHE='nishiharima-guide-v20';
 const ASSETS=['./manifest.webmanifest','./icon-180.png','./icon-192.png','./icon-512.png','./merrywidow-1.jpg','./merrywidow-2.jpg','./coneru-1.jpg','./coneru-2.jpg'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
@@ -9,12 +9,11 @@ self.addEventListener('fetch',e=>{
    const type=resp.headers.get('content-type')||'';
    if(!type.includes('text/html'))return resp;
    let html=await resp.text();
-   html=html.replace('</body>','<script src="./admin-enhance.js?v=18"></script><script src="./spot-image-upload.js?v=18"></script><script src="./auth-restore.js?v=18"></script><script src="./public-sync.js?v=18"></script><script src="./admin-publish-fix.js?v=18"></script></body>');
+   html=html.replace('</body>','<script src="./v2.js?v=20"></script></body>');
    return new Response(html,{status:resp.status,statusText:resp.statusText,headers:resp.headers});
-  }).catch(()=>caches.match('./index.html')));
-  return;
+  }).catch(()=>caches.match('./index.html')));return;
  }
  const path=new URL(e.request.url).pathname;
- if(path.endsWith('/admin-enhance.js')||path.endsWith('/spot-image-upload.js')||path.endsWith('/auth-restore.js')||path.endsWith('/public-sync.js')||path.endsWith('/admin-publish-fix.js')||path.endsWith('/sw.js')){e.respondWith(fetch(e.request,{cache:'no-store'}));return;}
+ if(path.endsWith('/v2.js')||path.endsWith('/sw.js')){e.respondWith(fetch(e.request,{cache:'no-store'}));return;}
  e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(resp=>{const copy=resp.clone();caches.open(CACHE).then(c=>c.put(e.request,copy));return resp;})));
 });
