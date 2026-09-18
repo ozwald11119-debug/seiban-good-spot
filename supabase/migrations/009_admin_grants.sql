@@ -1,0 +1,1 @@
+grant insert,update,delete on public.spots to authenticated;

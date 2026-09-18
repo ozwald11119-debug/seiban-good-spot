@@ -1,0 +1,1 @@
+These SQL files mirror the initial production schema. Apply in numeric order only to a fresh project.

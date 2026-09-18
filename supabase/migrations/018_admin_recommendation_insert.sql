@@ -1,0 +1,1 @@
+-- Admins use the same pending recommendation insert policy as public users; review actions are separately authorized.

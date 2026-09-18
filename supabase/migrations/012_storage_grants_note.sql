@@ -1,0 +1,1 @@
+-- Storage API handles object operations; RLS policies above restrict authenticated admin mutations.

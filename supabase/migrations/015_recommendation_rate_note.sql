@@ -1,0 +1,1 @@
+-- Public recommendation inserts are intentionally write-only through RLS. Add CAPTCHA/Edge Function rate limiting if abuse appears.
