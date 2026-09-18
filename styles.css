@@ -1,64 +1,44 @@
 :root{
   --bg:#f6f2e9;
   --paper:#fffdf8;
-  --ink:#25241f;
-  --muted:#77736a;
-  --line:#ded8cc;
-  --accent:#496a57;
-  --accent-soft:#dce7dd;
+  --ink:#292720;
+  --muted:#7d786e;
+  --line:#d9d3c7;
+  --accent:#4d725d;
+  --accent-soft:#dce8df;
+  --map:#eee9dd;
+  --map-line:#c7c1b5;
   --sea:#dce9ec;
   --shadow:0 12px 32px rgba(42,39,32,.08);
 }
 
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
-html{
-  scroll-behavior:smooth;
-}
+html{scroll-behavior:smooth}
 
 body{
   margin:0;
   background:var(--bg);
   color:var(--ink);
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Hiragino Sans",
-    "Yu Gothic",
-    sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;
   -webkit-font-smoothing:antialiased;
 }
 
-button,
-input{
-  font:inherit;
-}
-
-button{
-  color:inherit;
-}
-
-button,
-a{
-  -webkit-tap-highlight-color:transparent;
-}
+button,input{font:inherit}
+button{color:inherit}
+button,a{-webkit-tap-highlight-color:transparent}
 
 .app{
   width:100%;
   max-width:720px;
   min-height:100vh;
-  margin:0 auto;
+  margin:auto;
   padding-bottom:105px;
 }
 
-.top{
-  padding:24px 22px 10px;
-}
+.top{padding:24px 22px 10px}
 
-.eyebrow,
-.sectionEyebrow{
+.eyebrow,.sectionEyebrow{
   display:block;
   margin-bottom:6px;
   color:var(--accent);
@@ -138,15 +118,10 @@ main{
   margin-bottom:13px;
 }
 
-.sectionHead h2,
-.sectionHead h3{
+.sectionHead h2,.sectionHead h3{
   margin:0;
   font-size:20px;
   letter-spacing:-.025em;
-}
-
-.mapSection{
-  padding-top:2px;
 }
 
 .mapIntro{
@@ -164,160 +139,237 @@ main{
   font-weight:700;
 }
 
+/* ─────────────────────────────
+   WEST HARIMA + HIMEJI MAP
+───────────────────────────── */
+
 .seibanMap{
   position:relative;
   width:100%;
-  height:430px;
+  height:440px;
   overflow:hidden;
-  border:1px solid rgba(73,106,87,.10);
-  border-radius:32px;
+  border:1px solid rgba(65,70,62,.09);
+  border-radius:30px;
   background:
     linear-gradient(
       to bottom,
-      #f1eee5 0%,
-      #f1eee5 72%,
-      var(--sea) 72%,
+      #f4f0e6 0%,
+      #f4f0e6 76%,
+      var(--sea) 76%,
       var(--sea) 100%
     );
   box-shadow:var(--shadow);
 }
 
-.seibanMap:before{
-  content:"";
-  position:absolute;
-  left:0;
-  right:0;
-  top:72%;
-  height:1px;
-  background:rgba(74,118,128,.15);
-}
-
+/* 共通：市町そのものがボタン */
 .mapArea{
   position:absolute;
+  z-index:2;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  min-width:72px;
-  min-height:64px;
-  padding:10px 8px;
-  border:1.5px solid rgba(64,86,69,.24);
-  border-radius:42% 55% 45% 52% / 50% 43% 57% 48%;
-  background:#fffdf7;
-  box-shadow:0 7px 16px rgba(50,55,46,.07);
+  margin:0;
+  padding:8px 5px;
+  border:1px solid var(--map-line);
+  background:var(--map);
+  box-shadow:none;
   cursor:pointer;
   transition:
-    transform .18s ease,
-    background .18s ease,
-    color .18s ease,
-    box-shadow .18s ease;
-}
-
-.mapArea:nth-of-type(even){
-  border-radius:55% 43% 52% 46% / 43% 55% 45% 56%;
+    background .16s ease,
+    color .16s ease,
+    filter .16s ease,
+    transform .12s ease;
 }
 
 .mapArea strong{
+  position:relative;
+  z-index:3;
   display:block;
-  font-size:14px;
-  line-height:1.2;
+  font-size:13px;
+  line-height:1.15;
+  white-space:nowrap;
 }
 
 .mapArea span{
+  position:relative;
+  z-index:3;
   display:block;
   margin-top:4px;
-  color:#8c887f;
-  font-size:8px;
-  font-weight:700;
-  letter-spacing:.11em;
+  color:#928d83;
+  font-size:7px;
+  font-weight:800;
+  letter-spacing:.12em;
 }
 
 .mapArea:active{
-  transform:scale(.96);
+  filter:brightness(.96);
 }
 
 .mapArea.active{
   z-index:5;
   background:var(--accent);
-  color:white;
-  border-color:var(--accent);
-  box-shadow:0 9px 22px rgba(73,106,87,.25);
+  border-color:#3e624e;
+  color:#fff;
+  filter:drop-shadow(0 7px 9px rgba(48,78,60,.20));
 }
 
 .mapArea.active span{
   color:rgba(255,255,255,.72);
 }
 
-/* 北西 */
+/*
+  位置関係
+
+        宍粟 ┃ 姫路
+        ━━━╋━━━━
+  上郡 ┃ たつの ┃太子
+        ┣━━━━╋━━
+  赤穂 ┃ 相生  ┃ 姫路南部
+*/
+
+/* 宍粟市 */
 .shiso{
   left:10%;
-  top:8%;
-  width:125px;
-  height:120px;
-  transform:rotate(-3deg);
+  top:7%;
+  width:37%;
+  height:37%;
+  border-radius:42% 4% 3% 34% / 24% 3% 4% 30%;
+  clip-path:polygon(
+    12% 5%,
+    84% 0,
+    100% 17%,
+    94% 100%,
+    18% 95%,
+    0 66%,
+    6% 28%
+  );
 }
 
-/* 北東 */
+/* 姫路市 */
 .himeji{
-  right:9%;
-  top:14%;
-  width:128px;
-  height:132px;
-  transform:rotate(2deg);
+  left:47%;
+  top:9%;
+  width:43%;
+  height:49%;
+  border-radius:3% 35% 27% 3% / 3% 25% 30% 4%;
+  clip-path:polygon(
+    5% 4%,
+    73% 0,
+    100% 19%,
+    93% 73%,
+    79% 100%,
+    7% 93%,
+    0 42%
+  );
 }
 
-/* 中央 */
+/* たつの市 */
 .tatsuno{
-  left:35%;
-  top:30%;
-  width:120px;
-  height:112px;
-  transform:rotate(-2deg);
+  left:34%;
+  top:40%;
+  width:31%;
+  height:32%;
+  clip-path:polygon(
+    6% 0,
+    93% 5%,
+    100% 76%,
+    79% 100%,
+    7% 92%,
+    0 31%
+  );
 }
 
-/* 姫路とたつのの間 */
+/* 太子町 */
 .taishi{
-  right:21%;
-  top:44%;
-  width:76px;
-  height:68px;
-}
-
-/* 南西 */
-.kamigori{
-  left:7%;
+  left:64%;
   top:48%;
-  width:110px;
-  height:96px;
-  transform:rotate(2deg);
+  width:19%;
+  height:18%;
+  clip-path:polygon(
+    5% 4%,
+    88% 0,
+    100% 38%,
+    83% 100%,
+    0 88%
+  );
 }
 
-/* 南中央 */
+.taishi strong{font-size:12px}
+
+/* 上郡町 */
+.kamigori{
+  left:8%;
+  top:43%;
+  width:28%;
+  height:29%;
+  border-radius:20% 2% 3% 22%;
+  clip-path:polygon(
+    11% 0,
+    100% 4%,
+    92% 96%,
+    21% 100%,
+    0 68%,
+    4% 20%
+  );
+}
+
+/* 相生市 */
 .aioi{
-  left:37%;
-  top:58%;
-  width:88px;
-  height:76px;
-  transform:rotate(-2deg);
+  left:34%;
+  top:69%;
+  width:30%;
+  height:18%;
+  clip-path:polygon(
+    8% 0,
+    83% 4%,
+    100% 36%,
+    82% 100%,
+    15% 91%,
+    0 51%
+  );
 }
 
-/* 海沿い南西 */
+/* 赤穂市 */
 .ako{
-  left:9%;
-  top:70%;
-  width:112px;
-  height:82px;
-  transform:rotate(1deg);
+  left:8%;
+  top:69%;
+  width:28%;
+  height:22%;
+  border-radius:3% 3% 3% 25%;
+  clip-path:polygon(
+    8% 0,
+    100% 4%,
+    93% 79%,
+    67% 100%,
+    12% 90%,
+    0 56%
+  );
 }
 
+/* 地図に薄い道路っぽい線 */
+.seibanMap:after{
+  content:"";
+  position:absolute;
+  z-index:1;
+  left:13%;
+  top:59%;
+  width:70%;
+  height:1px;
+  background:rgba(129,119,99,.14);
+  transform:rotate(-4deg);
+}
+
+/* 瀬戸内海 */
 .seaLabel{
   position:absolute;
+  z-index:1;
   right:18px;
-  bottom:17px;
-  color:#759098;
+  bottom:18px;
+  color:#78939a;
   font-size:9px;
   font-weight:800;
-  letter-spacing:.18em;
+  letter-spacing:.17em;
 }
 
 .selectedAreaMessage{
@@ -327,9 +379,11 @@ main{
   text-align:center;
 }
 
-.searchWrap{
-  position:relative;
-}
+/* ─────────────────────────────
+   SEARCH / FILTER
+───────────────────────────── */
+
+.searchWrap{position:relative}
 
 .searchIcon{
   position:absolute;
@@ -367,9 +421,7 @@ main{
   scrollbar-width:none;
 }
 
-.chips::-webkit-scrollbar{
-  display:none;
-}
+.chips::-webkit-scrollbar{display:none}
 
 .chip{
   flex:0 0 auto;
@@ -385,11 +437,14 @@ main{
 .chip.active{
   border-color:var(--accent);
   background:var(--accent);
-  color:white;
+  color:#fff;
 }
 
-.featuredGrid,
-.spotGrid{
+/* ─────────────────────────────
+   SPOTS
+───────────────────────────── */
+
+.featuredGrid,.spotGrid{
   display:grid;
   grid-template-columns:1fr;
   gap:13px;
@@ -442,13 +497,9 @@ main{
   box-shadow:0 4px 12px rgba(0,0,0,.08);
 }
 
-.favoriteButton.active{
-  color:#b45f62;
-}
+.favoriteButton.active{color:#b45f62}
 
-.spotBody{
-  padding:16px;
-}
+.spotBody{padding:16px}
 
 .spotMeta{
   display:flex;
@@ -523,6 +574,12 @@ main{
   font-size:12px;
 }
 
+.hidden{display:none!important}
+
+/* ─────────────────────────────
+   BOTTOM NAV
+───────────────────────────── */
+
 .bottom{
   position:fixed;
   z-index:20;
@@ -554,9 +611,7 @@ main{
   color:#8a867d;
 }
 
-.bottom button span{
-  font-size:20px;
-}
+.bottom button span{font-size:20px}
 
 .bottom button small{
   font-size:10px;
@@ -568,15 +623,14 @@ main{
   color:var(--accent);
 }
 
+/* ─────────────────────────────
+   MODAL
+───────────────────────────── */
+
 .modal{
   position:fixed;
   z-index:100;
   inset:0;
-}
-
-.modal.hidden,
-.hidden{
-  display:none !important;
 }
 
 .modalBackdrop{
@@ -660,18 +714,15 @@ main{
 
 .modalLinks a.primary{
   background:var(--accent);
-  color:white;
+  color:#fff;
 }
 
 @media(min-width:620px){
-  .featuredGrid,
-  .spotGrid{
+  .featuredGrid,.spotGrid{
     grid-template-columns:repeat(2,1fr);
   }
 
-  .seibanMap{
-    height:480px;
-  }
+  .seibanMap{height:500px}
 
   .top{
     padding-left:28px;
