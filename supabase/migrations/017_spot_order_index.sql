@@ -1,0 +1,1 @@
+create index if not exists spots_public_order_idx on public.spots(sort_order,created_at) where published=true;
