@@ -1,0 +1,1 @@
+create index if not exists spots_published_idx on public.spots(published);
