@@ -1,0 +1,1 @@
+create index if not exists recommendations_status_created_idx on public.recommendations(status,created_at desc);
