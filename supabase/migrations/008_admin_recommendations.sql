@@ -1,0 +1,4 @@
+grant select,update,delete on public.recommendations to authenticated;
+create policy "admins can review recommendations" on public.recommendations for select to authenticated using (exists(select 1 from public.admins a where a.user_id=(select auth.uid())));
+create policy "admins can update recommendations" on public.recommendations for update to authenticated using (exists(select 1 from public.admins a where a.user_id=(select auth.uid()))) with check (exists(select 1 from public.admins a where a.user_id=(select auth.uid())));
+create policy "admins can delete recommendations" on public.recommendations for delete to authenticated using (exists(select 1 from public.admins a where a.user_id=(select auth.uid())));
