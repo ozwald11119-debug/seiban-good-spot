@@ -1,11 +1,233 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f7f2e9"><title>西播磨＋姫路 おでかけガイド</title><link rel="manifest" href="manifest.webmanifest"><link rel="stylesheet" href="styles.css"></head><body>
-<div class="app"><header class="top"><div class="eyebrow">NISHI HARIMA + HIMEJI DISCOVERY</div><h1>西播磨＋姫路<br>おでかけガイド</h1><p>有名どころだけじゃない。<br>「こんなところあったんだ」を見つけるページ。</p><small id="dataStatus"></small></header>
-<main><section class="hero"><div><span>LOCAL GUIDE MAP</span><h2>今日は、どこに<br>寄り道する？</h2><p>気になる場所を見つけて保存。行きたくなったら、そのまま地図へ。</p></div></section>
-<section class="searchWrap"><input id="search" type="search" placeholder="スポット名・市町・キーワードで探す"><button id="clearSearch" aria-label="検索を消す">×</button></section>
-<section><div class="sectionHead"><h3>まずはここ、どう？</h3><small>横にスワイプ →</small></div><div id="featured" class="featured"></div></section>
-<section><div class="sectionHead"><h3>エリアから見つける</h3><button id="allArea" class="textBtn">すべて</button></div><div id="areas" class="areaGrid"></div></section>
-<section><div class="sectionHead"><h3>ジャンルから探す</h3></div><div id="genres" class="chips"></div></section>
-<section><div class="sectionHead"><h3 id="listTitle">おすすめスポット</h3><small id="count"></small></div><div id="spotGrid" class="spotGrid"></div><div id="empty" class="empty hidden">条件に合うスポットがありません。</div></section></main>
-<nav class="bottom"><button data-tab="discover" class="active">⌂<span>見つける</span></button><button data-tab="saved">♡<span>保存</span></button></nav></div>
-<div id="modal" class="modal hidden"><div class="backdrop" data-close></div><article class="sheet"><button class="close" data-close>×</button><div id="modalVisual" class="modalVisual"></div><div class="sheetBody"><div id="modalMeta" class="meta"></div><h2 id="modalName"></h2><p id="modalLead" class="lead"></p><p id="modalDesc" class="desc"></p><div id="modalTags" class="tags"></div><div id="modalActions" class="actions"></div></div></article></div>
-<script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f6f2e9">
+  <title>西播磨＋姫路 おでかけガイド</title>
+  <meta name="description" content="姫路・西播磨の素敵なお店やスポットを地図から見つけるローカルガイド">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div class="app">
+
+  <header class="top">
+    <div>
+      <span class="eyebrow">LOCAL GUIDE</span>
+      <h1>西播磨＋姫路<br>おでかけガイド</h1>
+      <p>近くにある、ちょっと素敵な場所。</p>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero">
+      <div>
+        <span>WHERE TO GO?</span>
+        <h2>今日は、どこ行こ。</h2>
+        <p>
+          姫路と西播磨で見つけた<br>
+          おすすめのお店・場所を集めました。
+        </p>
+      </div>
+    </section>
+
+    <section class="mapSection">
+
+      <div class="sectionHead">
+        <div>
+          <span class="sectionEyebrow">AREA MAP</span>
+          <h2>地図から探す</h2>
+        </div>
+        <button id="clearArea" class="textButton" type="button">
+          選択解除
+        </button>
+      </div>
+
+      <p class="mapIntro">
+        気になるまちをタップしてみて。
+      </p>
+
+      <div class="seibanMap" aria-label="西播磨と姫路のエリアマップ">
+
+        <button
+          class="mapArea shiso"
+          data-area="宍粟市"
+          type="button">
+          <strong>宍粟市</strong>
+          <span>SHISO</span>
+        </button>
+
+        <button
+          class="mapArea himeji"
+          data-area="姫路市"
+          type="button">
+          <strong>姫路市</strong>
+          <span>HIMEJI</span>
+        </button>
+
+        <button
+          class="mapArea tatsuno"
+          data-area="たつの市"
+          type="button">
+          <strong>たつの市</strong>
+          <span>TATSUNO</span>
+        </button>
+
+        <button
+          class="mapArea taishi"
+          data-area="太子町"
+          type="button">
+          <strong>太子町</strong>
+          <span>TAISHI</span>
+        </button>
+
+        <button
+          class="mapArea kamigori"
+          data-area="上郡町"
+          type="button">
+          <strong>上郡町</strong>
+          <span>KAMIGORI</span>
+        </button>
+
+        <button
+          class="mapArea aioi"
+          data-area="相生市"
+          type="button">
+          <strong>相生市</strong>
+          <span>AIOI</span>
+        </button>
+
+        <button
+          class="mapArea ako"
+          data-area="赤穂市"
+          type="button">
+          <strong>赤穂市</strong>
+          <span>AKO</span>
+        </button>
+
+        <div class="seaLabel">
+          SETO INLAND SEA
+        </div>
+
+      </div>
+
+      <div id="selectedAreaMessage" class="selectedAreaMessage">
+        すべてのエリアを表示中
+      </div>
+
+    </section>
+
+    <section class="searchWrap">
+      <span class="searchIcon">⌕</span>
+      <input
+        id="search"
+        type="search"
+        placeholder="店名・ジャンル・キーワードで検索"
+        autocomplete="off">
+    </section>
+
+    <section>
+      <div class="sectionHead">
+        <div>
+          <span class="sectionEyebrow">PICK UP</span>
+          <h2>まずはここ、どう？</h2>
+        </div>
+      </div>
+
+      <div id="featured" class="featuredGrid"></div>
+    </section>
+
+    <section>
+      <div class="sectionHead">
+        <div>
+          <span class="sectionEyebrow">AREA</span>
+          <h2>エリアから見つける</h2>
+        </div>
+      </div>
+
+      <div id="areas" class="chips">
+        <button data-area="" class="chip active" type="button">すべて</button>
+        <button data-area="姫路市" class="chip" type="button">姫路市</button>
+        <button data-area="宍粟市" class="chip" type="button">宍粟市</button>
+        <button data-area="たつの市" class="chip" type="button">たつの市</button>
+        <button data-area="太子町" class="chip" type="button">太子町</button>
+        <button data-area="上郡町" class="chip" type="button">上郡町</button>
+        <button data-area="相生市" class="chip" type="button">相生市</button>
+        <button data-area="赤穂市" class="chip" type="button">赤穂市</button>
+      </div>
+    </section>
+
+    <section>
+      <div class="sectionHead">
+        <div>
+          <span class="sectionEyebrow">CATEGORY</span>
+          <h2>ジャンルから探す</h2>
+        </div>
+      </div>
+
+      <div id="genres" class="chips">
+        <button data-genre="" class="chip active" type="button">すべて</button>
+        <button data-genre="カフェ" class="chip" type="button">カフェ</button>
+        <button data-genre="パン" class="chip" type="button">パン</button>
+        <button data-genre="グルメ" class="chip" type="button">グルメ</button>
+        <button data-genre="スイーツ" class="chip" type="button">スイーツ</button>
+        <button data-genre="ショップ" class="chip" type="button">ショップ</button>
+        <button data-genre="スポット" class="chip" type="button">スポット</button>
+      </div>
+    </section>
+
+    <section id="spotSection">
+      <div class="sectionHead">
+        <div>
+          <span class="sectionEyebrow">SPOTS</span>
+          <h2 id="listTitle">おすすめスポット</h2>
+        </div>
+        <span id="resultCount" class="resultCount"></span>
+      </div>
+
+      <div id="spotList" class="spotGrid"></div>
+
+      <div id="emptyState" class="emptyState hidden">
+        <strong>まだスポットがありません。</strong>
+        <p>条件を変えて探してみてね。</p>
+      </div>
+    </section>
+
+  </main>
+
+  <nav class="bottom">
+    <button data-tab="discover" class="active" type="button">
+      <span>⌖</span>
+      <small>見つける</small>
+    </button>
+
+    <button data-tab="favorites" type="button">
+      <span>♡</span>
+      <small>お気に入り</small>
+    </button>
+  </nav>
+
+</div>
+
+<div id="modal" class="modal hidden">
+  <div class="modalBackdrop" data-close-modal></div>
+
+  <article class="modalCard">
+    <button
+      class="modalClose"
+      data-close-modal
+      type="button"
+      aria-label="閉じる">
+      ×
+    </button>
+
+    <div id="modalContent"></div>
+  </article>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
