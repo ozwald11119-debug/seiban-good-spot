@@ -61,13 +61,10 @@
     if (geometry.type === "MultiPolygon") return geometry.coordinates.flat();
     return [];
   };
-
   const allPoints = feature => ringsOf(feature.geometry).flat();
-
   const largestOuterRing = feature => {
     const rings = ringsOf(feature.geometry);
-    let best = rings[0] || [];
-    let bestArea = 0;
+    let best = rings[0] || [], bestArea = 0;
     for (const ring of rings) {
       let a = 0;
       for (let i=0,j=ring.length-1;i<ring.length;j=i++) a += ring[j][0]*ring[i][1]-ring[i][0]*ring[j][1];
@@ -99,7 +96,6 @@
       g.setAttribute('role','button');
       g.setAttribute('tabindex','0');
       g.setAttribute('aria-label',`${name}を選択`);
-
       const path=document.createElementNS(NS,'path');
       path.setAttribute('d',ringsOf(feature.geometry).map(ringPath).join(' '));
       path.setAttribute('fill-rule','evenodd');
@@ -109,15 +105,14 @@
       let sx=0,sy=0;
       for(const p of main){sx+=p[0];sy+=p[1]}
       let x=sx/main.length,y=sy/main.length;
-      const tweaks={"姫路市":[8,25],"宍粟市":[0,0],"たつの市":[4,0],"太子町":[0,0],"上郡町":[0,0],"相生市":[0,0],"赤穂市":[0,0]};
+      const tweaks={"姫路市":[8,25],"宍粟市":[0,0],"たつの市":[-18,-14],"太子町":[0,0],"上郡町":[0,0],"相生市":[-24,18],"赤穂市":[0,0]};
       x+=tweaks[name][0]; y+=tweaks[name][1];
       const text=document.createElementNS(NS,'text');
       text.setAttribute('x',x); text.setAttribute('y',y);
-      text.setAttribute('class',`mapGeoLabel ${name==='太子町'?'small':''}`);
+      text.setAttribute('class',`mapGeoLabel ${['太子町','相生市','たつの市'].includes(name)?'small':''}`);
       text.textContent=name;
       g.appendChild(text);
       svg.appendChild(g);
-
       g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();g.dispatchEvent(new MouseEvent('click',{bubbles:true}))}});
     }
     loading.remove();
